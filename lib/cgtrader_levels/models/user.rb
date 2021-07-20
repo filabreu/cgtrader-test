@@ -4,8 +4,6 @@ class CgtraderLevels::User < ActiveRecord::Base
   after_initialize do
     self.reputation = 0
 
-    matching_level = CgtraderLevels::Level.where(experience: reputation).first
-
     if matching_level
       self.level_id = matching_level.id
       @level = matching_level
@@ -16,9 +14,14 @@ class CgtraderLevels::User < ActiveRecord::Base
 
   private
 
-  def set_new_level
-    matching_level = CgtraderLevels::Level.where(experience: reputation).first
+  def matching_level
+    CgtraderLevels::Level
+      .where("experience <= ?", reputation)
+      .order('experience DESC')
+      .first
+  end
 
+  def set_new_level
     if matching_level
       self.level_id = matching_level.id
       @level = matching_level
