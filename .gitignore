@@ -1,0 +1,15 @@
+.rspec
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-[0-9]*
+
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+/.bundle
+/vendor/bundle
+
+**/.DS_Store
+__MACOSX
