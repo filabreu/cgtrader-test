@@ -56,9 +56,6 @@ describe CgtraderLevels::User do
       @reward_2 = CgtraderLevels::Reward.create!(level: @level_2, type: 'CgtraderLevels::TaxRate', amount: 19)
       @user = CgtraderLevels::User.create!
 
-      expect(@level_1.rewards.first).to eq @reward_1
-      expect(@level_2.rewards.first).to eq @reward_2
-
       expect {
         @user.update_attribute(:reputation, 10)
       }.to change { @user.reload.tax_rate }.from(20).to(19)
