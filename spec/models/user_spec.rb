@@ -49,6 +49,19 @@ describe CgtraderLevels::User do
       }.to change { @user.reload.coins }.from(1).to(8)
     end
 
-    it 'reduces tax rate by 1'
+    it 'reduces tax rate by 1' do
+      @level_1 = CgtraderLevels::Level.create!(experience: 0, title: 'First level')
+      @level_2 = CgtraderLevels::Level.create!(experience: 10, title: 'Second level')
+      @reward_1 = CgtraderLevels::Reward.create!(level: @level_1, type: 'CgtraderLevels::TaxRate', amount: 20)
+      @reward_2 = CgtraderLevels::Reward.create!(level: @level_2, type: 'CgtraderLevels::TaxRate', amount: 19)
+      @user = CgtraderLevels::User.create!
+
+      expect(@level_1.rewards.first).to eq @reward_1
+      expect(@level_2.rewards.first).to eq @reward_2
+
+      expect {
+        @user.update_attribute(:reputation, 10)
+      }.to change { @user.reload.tax_rate }.from(20).to(19)
+    end
   end
 end

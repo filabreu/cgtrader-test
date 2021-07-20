@@ -18,3 +18,10 @@ ActiveRecord::Base.connection.create_table :levels do |table|
   table.string :title
   table.integer :experience
 end
+
+ActiveRecord::Base.connection.create_table :rewards do |table|
+  table.references :level
+  table.string :title
+  table.string :type
+  table.integer :amount
+end

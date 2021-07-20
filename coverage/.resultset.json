@@ -8,6 +8,8 @@
           1,
           1,
           1,
+          1,
+          1,
           null
         ]
       },
@@ -17,20 +19,28 @@
           1,
           null,
           1,
-          11,
+          12,
           null,
-          11,
-          7,
-          7,
+          12,
+          10,
+          10,
+          null,
+          null,
+          12,
+          3,
           null,
           null,
           null,
           1,
           null,
           1,
+          15,
+          null,
           null,
           1,
-          32,
+          null,
+          1,
+          41,
           null,
           null,
           null,
@@ -38,8 +48,14 @@
           null,
           1,
           3,
-          2,
-          2,
+          3,
+          3,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
           null,
           null,
           null
@@ -48,10 +64,23 @@
       "/app/lib/cgtrader_levels/models/level.rb": {
         "lines": [
           1,
+          1,
           null
+        ]
+      },
+      "/app/lib/cgtrader_levels/models/reward.rb": {
+        "lines": [
+          1,
+          1,
+          null
+        ]
+      },
+      "/app/lib/cgtrader_levels/models/tax_rate.rb": {
+        "lines": [
+          1
         ]
       }
     },
-    "timestamp": 1626815306
+    "timestamp": 1626818841
   }
 }
