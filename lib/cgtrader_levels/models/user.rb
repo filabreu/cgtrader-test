@@ -10,6 +10,10 @@ class CgtraderLevels::User < ActiveRecord::Base
     level.rewards.where(type: 'CgtraderLevels::TaxRate').first.amount
   end
 
+  def coins
+    level.rewards.where(type: 'CgtraderLevels::Coin').first.amount
+  end
+
   private
 
   def matching_level

@@ -10,6 +10,7 @@
           1,
           1,
           1,
+          1,
           null
         ]
       },
@@ -28,9 +29,13 @@
           null,
           null,
           1,
+          2,
+          null,
           null,
           1,
-          17,
+          null,
+          1,
+          19,
           null,
           null,
           null,
@@ -42,7 +47,7 @@
           null,
           1,
           10,
-          7,
+          9,
           null,
           null,
           null
@@ -62,12 +67,17 @@
           null
         ]
       },
+      "/app/lib/cgtrader_levels/models/coin.rb": {
+        "lines": [
+          1
+        ]
+      },
       "/app/lib/cgtrader_levels/models/tax_rate.rb": {
         "lines": [
           1
         ]
       }
     },
-    "timestamp": 1626821242
+    "timestamp": 1626821875
   }
 }
