@@ -5,14 +5,7 @@ class CgtraderLevels::User < ActiveRecord::Base
   after_initialize :set_new_level, if: :new_record?
 
   before_update :set_new_level
-
-  def tax_rate
-    level.rewards.where(type: 'CgtraderLevels::TaxRate').first.amount
-  end
-
-  def coins
-    level.rewards.where(type: 'CgtraderLevels::Coin').first.amount
-  end
+  before_update :apply_rewards
 
   private
 
@@ -30,6 +23,18 @@ class CgtraderLevels::User < ActiveRecord::Base
   def set_new_level
     if matching_level
       self.level_id = matching_level.id
+    end
+  end
+
+  def apply_rewards
+    if level_id_changed?
+      new_attributes = {}
+
+      level.rewards.each do |reward|
+        new_attributes[reward.target] = send(reward.target) + reward.amount
+      end
+
+      assign_attributes(new_attributes)
     end
   end
 end

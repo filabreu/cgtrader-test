@@ -1,1 +1,0 @@
-class CgtraderLevels::TaxRate < CgtraderLevels::Reward; end

@@ -22,6 +22,6 @@ end
 ActiveRecord::Base.connection.create_table :rewards do |table|
   table.references :level
   table.string :title
-  table.string :type
+  table.string :target
   table.integer :amount
 end

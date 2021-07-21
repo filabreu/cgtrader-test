@@ -42,10 +42,9 @@ describe CgtraderLevels::User do
     it 'gives 7 coins to user' do
       @level_1 = CgtraderLevels::Level.create!(experience: 0, title: 'First level')
       @level_2 = CgtraderLevels::Level.create!(experience: 10, title: 'Second level')
-      @reward_1 = CgtraderLevels::Reward.create!(level: @level_1, type: 'CgtraderLevels::Coin', amount: 1)
-      @reward_2 = CgtraderLevels::Reward.create!(level: @level_2, type: 'CgtraderLevels::Coin', amount: 8)
+      @reward = CgtraderLevels::Reward.create!(level: @level_2, target: 'coins', amount: 7)
 
-      @user = CgtraderLevels::User.create!
+      @user = CgtraderLevels::User.create!(coins: 1)
 
       expect {
         @user.update_attribute(:reputation, 10)
@@ -55,13 +54,36 @@ describe CgtraderLevels::User do
     it 'reduces tax rate by 1' do
       @level_1 = CgtraderLevels::Level.create!(experience: 0, title: 'First level')
       @level_2 = CgtraderLevels::Level.create!(experience: 10, title: 'Second level')
-      @reward_1 = CgtraderLevels::Reward.create!(level: @level_1, type: 'CgtraderLevels::TaxRate', amount: 20)
-      @reward_2 = CgtraderLevels::Reward.create!(level: @level_2, type: 'CgtraderLevels::TaxRate', amount: 19)
+      @reward = CgtraderLevels::Reward.create!(level: @level_2, target: 'tax', amount: -1)
       @user = CgtraderLevels::User.create!
 
       expect {
         @user.update_attribute(:reputation, 10)
-      }.to change { @user.reload.tax_rate }.from(20).to(19)
+      }.to change { @user.reload.tax }.from(30).to(29)
+    end
+
+    context 'when not leveling up' do
+      it 'keeps tax rate' do
+        @level_1 = CgtraderLevels::Level.create!(experience: 0, title: 'First level')
+        @level_2 = CgtraderLevels::Level.create!(experience: 10, title: 'Second level')
+        @reward = CgtraderLevels::Reward.create!(level: @level_2, target: 'tax', amount: -1)
+        @user = CgtraderLevels::User.create!
+  
+        expect {
+          @user.update_attribute(:reputation, 9)
+        }.not_to change { @user.reload.tax }
+      end
+  
+      it 'keeps tax rate' do
+        @level_1 = CgtraderLevels::Level.create!(experience: 0, title: 'First level')
+        @level_2 = CgtraderLevels::Level.create!(experience: 10, title: 'Second level')
+        @reward = CgtraderLevels::Reward.create!(level: @level_2, target: 'tax', amount: -1)
+        @user = CgtraderLevels::User.create!
+  
+        expect {
+          @user.update_attribute(:reputation, 9)
+        }.not_to change { @user.reload.tax }
+      end
     end
   end
 end
