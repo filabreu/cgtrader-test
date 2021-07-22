@@ -71,6 +71,38 @@ describe CgtraderLevels::User do
       end
     end
 
+    context '1 level down' do
+      let(:user) { CgtraderLevels::User.create!(coins: 18, tax: 28, reputation: 15) }
+
+      it 'reduces 10 coins to user' do
+        expect {
+          user.update_attribute(:reputation, 10)
+        }.to change { user.reload.coins }.from(18).to(8)
+      end
+
+      it 'increases tax rate by 1' do
+        expect {
+          user.update_attribute(:reputation, 10)
+        }.to change { user.reload.tax }.from(28).to(29)
+      end
+    end
+
+    context '2 levels down' do
+      let(:user) { CgtraderLevels::User.create!(coins: 18, tax: 28, reputation: 15) }
+
+      it 'reduces 18 coins to user' do
+        expect {
+          user.update_attribute(:reputation, 0)
+        }.to change { user.reload.coins }.from(18).to(1)
+      end
+
+      it 'increases tax rate by 2' do
+        expect {
+          user.update_attribute(:reputation, 0)
+        }.to change { user.reload.tax }.from(28).to(30)
+      end
+    end
+
     context 'when not leveling up' do
       it 'keeps coins' do
         expect {
