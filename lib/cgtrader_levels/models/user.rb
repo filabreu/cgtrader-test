@@ -27,13 +27,24 @@ class CgtraderLevels::User < ActiveRecord::Base
 
   def apply_rewards
     if level_id_changed?
-      new_attributes = {}
+      new_attributes = {
+        'coins' => coins,
+        'tax' => tax
+      }
 
-      level.rewards.each do |reward|
-        new_attributes[reward.target] = public_send(reward.target) + reward.amount
+      levels_evolved.map(&:rewards).flatten.each do |reward|
+        new_attributes[reward.target] += reward.amount
       end
 
       assign_attributes(new_attributes)
     end
+  end
+
+  def levels_evolved
+    CgtraderLevels::Level
+      .where("experience > ? AND experience <= ?",
+        changes['reputation'][0],
+        changes['reputation'][1]
+      )
   end
 end

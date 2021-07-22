@@ -38,29 +38,47 @@ describe CgtraderLevels::User do
 
   describe '#apply_rewards' do
     let(:user) { CgtraderLevels::User.create!(coins: 1) }
-    let!(:coins_reward) { CgtraderLevels::Reward.create!(level: level_2, target: 'coins', amount: 7) }
-    let!(:tax_reward) { CgtraderLevels::Reward.create!(level: level_2, target: 'tax', amount: -1) }
+    let!(:coins_reward_1) { CgtraderLevels::Reward.create!(level: level_2, target: 'coins', amount: 7) }
+    let!(:tax_reward_1) { CgtraderLevels::Reward.create!(level: level_2, target: 'tax', amount: -1) }
+    let!(:coins_reward_2) { CgtraderLevels::Reward.create!(level: level_3, target: 'coins', amount: 10) }
+    let!(:tax_reward_2) { CgtraderLevels::Reward.create!(level: level_3, target: 'tax', amount: -1) }
 
-    it 'gives 7 coins to user' do
-      expect {
-        user.update_attribute(:reputation, 10)
-      }.to change { user.reload.coins }.from(1).to(8)
+    context '1 level up' do
+      it 'gives 7 coins to user' do
+        expect {
+          user.update_attribute(:reputation, 10)
+        }.to change { user.reload.coins }.from(1).to(8)
+      end
+
+      it 'reduces tax rate by 1' do
+        expect {
+          user.update_attribute(:reputation, 10)
+        }.to change { user.reload.tax }.from(30).to(29)
+      end
     end
 
-    it 'reduces tax rate by 1' do
-      expect {
-        user.update_attribute(:reputation, 10)
-      }.to change { user.reload.tax }.from(30).to(29)
+    context '2 levels up' do
+      it 'gives 17 coins to user' do
+        expect {
+          user.update_attribute(:reputation, 15)
+        }.to change { user.reload.coins }.from(1).to(18)
+      end
+
+      it 'reduces tax rate by 2' do
+        expect {
+          user.update_attribute(:reputation, 15)
+        }.to change { user.reload.tax }.from(30).to(28)
+      end
     end
 
     context 'when not leveling up' do
-      it 'keeps coins' do  
+      it 'keeps coins' do
         expect {
           user.update_attribute(:reputation, 9)
         }.not_to change { user.reload.coins }
       end
   
-      it 'keeps tax rate' do  
+      it 'keeps tax rate' do
         expect {
           user.update_attribute(:reputation, 9)
         }.not_to change { user.reload.tax }
